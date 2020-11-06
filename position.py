@@ -1,3 +1,4 @@
+# cook your dish here
 def getpos(wnbxb,wnbyb,wnbzb,abx,aby,abz):
 	""" wnb (angular velocity from gyro sensor in body frame) contain values along x,y,z
 	
@@ -10,15 +11,15 @@ def getpos(wnbxb,wnbyb,wnbzb,abx,aby,abz):
 	#solved the matrix on paper
 	gamma=atan2(wnbyb,wnbzb)
 	theta=atan2((sin(gamma))*(gamma-wnbxb),wnbyb)
-	phi=wnbyb/((sin(gamma)*cos(thetha))
-	
+	phi=wnbyb/(sin(gamma)*cos(thetha))
+
 	Cbn12=sin(gamma)*sin(theta)*cos(phi)-cos(gamma)*sin(phi)
 	Cbn13=sin(gamma)*sin(phi)+cos(gamma)*sin(theta)*cos(phi)
 	Cbn22=cos(phi)*sin(gamma)+sin(gamma)*sin(theta)*sin(phi)
 	Cbn23=sin(phi)*sin(theta)*cos(gamma)-sin(gamma)*cos(phi)
 	#Cbn is the coordinate transformation matrix from B to N system
 	Cbn=np.matrix([[cos(phi)*cos(theta),Cbn12,Cbn13],[cos(theta)*sin(phi),Cbn22,Cbn23],[sin(theta),sin(gamma)*cos(theta),cos(theta)*cos(gamma)]])
-	
+
 	#accelerstion in the b frame (including gravity)
 	an1=np.matrix([[axn1],[ay1],[azn1]])
 	an1=Cbn*ab
@@ -27,14 +28,14 @@ def getpos(wnbxb,wnbyb,wnbzb,abx,aby,abz):
 	#Effect of gravity removed 
 	an=an1-np.matrix([[0],[0],[9.8]])
 	dellt=0.0001;
-	
+
 	#calulate velocity 
 	dellv=np.matrix([[dellvxn],[dellvyn],[dellvzn]])
 	dellv=an*dellt
 	#new is after 1 second from old
-	vnt_new=np.matrix([[vxn_new],[vyn_new],[vzn_new])
+	vnt_new=np.matrix([[vxn_new],[vyn_new],[vzn_new]])
 	vnt_new=np.matrix([[vxn_old],[vyn_old],[vzn_old]])+dellv
-	
+
 	#calculate displacement
 	dellXn=np.matrix([[dellXxn],[dellXyn],[dellXzn]])
 	dellXn=vnt_new*dellt+0.5*an*dellt*dellt
